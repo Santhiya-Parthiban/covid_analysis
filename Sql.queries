@@ -1,0 +1,69 @@
+CREATE DATABASE covid;
+USE covid;
+SELECT
+SUM(Confirmed) AS Total_confirmed,
+SUM(Deaths) AS Total_death,
+SUM(Recovered) AS Total_recovered
+FROM australia;
+
+SELECT `Province_State`,
+SUM(Confirmed) AS Total_confirmed, 
+SUM(Deaths) AS Total_deaths,     
+SUM(Recovered) AS Total_recovered 
+FROM australia 
+GROUP BY `Province_State` 
+ORDER BY Total_confirmed DESC;
+
+SELECT YEAR(STR_TO_DATE(Observation_Date, '%m/%d/%Y')) AS Year,   
+MONTH(STR_TO_DATE(Observation_Date, '%m/%d/%Y')) AS Month,   
+SUM(Confirmed) AS Total_confirmed,   
+SUM(Deaths) AS Total_deaths,   
+SUM(Recovered) AS Total_recovered 
+FROM australia 
+GROUP BY Year, Month 
+ORDER BY Year, Month DESC;
+
+-- Highest confirmed
+SELECT Province_State, SUM(Confirmed) AS TotalConfirmed
+FROM Australia
+GROUP BY Province_State
+ORDER BY TotalConfirmed DESC
+LIMIT 1;
+
+-- Highest death
+SELECT Province_State, SUM(Deaths) AS TotalDeath
+FROM Australia
+GROUP BY Province_State
+ORDER BY TotalDeath DESC
+LIMIT 1;
+
+-- Highest recovered
+SELECT Province_State, SUM(Recovered) AS TotalRecovered
+FROM Australia
+GROUP BY Province_State
+ORDER BY TotalRecovered DESC
+LIMIT 1;
+
+SELECT 
+    Province_State,
+    (SUM(Recovered) / SUM(Confirmed)) * 100 AS RecoveryRate
+FROM Australia
+GROUP BY Province_State
+ORDER BY RecoveryRate DESC;
+
+SELECT MONTH(STR_TO_DATE(Observation_Date, '%m/%d/%Y')) AS Month,
+    (SUM(Recovered) / SUM(Confirmed)) * 100 AS RecoveryRate
+FROM Australia
+GROUP BY Observation_Date
+ORDER BY RecoveryRate DESC;
+
+SELECT 
+    Province_State,
+    MONTH(STR_TO_DATE(Observation_Date, '%m/%d/%Y')) AS Month,
+    (SUM(Recovered) / SUM(Confirmed)) * 100 AS RecoveryRate
+FROM Australia
+GROUP BY Province_State, Month
+ORDER BY RecoveryRate DESC;
+
+
+
